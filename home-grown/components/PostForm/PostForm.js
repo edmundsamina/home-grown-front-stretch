@@ -5,9 +5,10 @@ import { useRouter } from "next/router";
 export default function PostForm({
   currentUser,
   userPosts,
-  setUserPosts,
+  userPlotData,
   handleClose,
 }) {
+  console.log(userPosts, "userPosts");
   const title = useRef();
   const postcode = useRef();
   const crop = useRef();
@@ -16,12 +17,12 @@ export default function PostForm({
   const date = useRef();
   const form = useRef();
   const router = useRouter();
-
+  console.log(userPlotData, "plot");
   async function onClick(e) {
     e.preventDefault();
 
     let postData = {
-      plot_id: Number(userPosts[0].plot_id),
+      plot_id: Number(userPlotData[0].plot_id),
       firebase_id: currentUser.uid,
       title: title.current.value,
       crop_id: Number(crop.current.value),
@@ -56,15 +57,20 @@ export default function PostForm({
     percentageArray.push(Math.round(percent * 10) / 10);
     percent += 0.1;
   }
-  console.log("%", percentageArray)
+  console.log("%", percentageArray);
 
-  if (userPosts && currentUser) {
+  if (userPlotData && currentUser) {
     return (
       <div className={styles["form-container"]}>
         <div className={styles["form-title-banner"]}>
           <div></div>
           <h2 className={styles["newPost-title"]}>NEW LISTING</h2>
-          <img className={styles["close-icon"]}src="/illustrations/close-icon.png" alt="cross for closing pop up" onClick={handleClose}/>
+          <img
+            className={styles["close-icon"]}
+            src="/illustrations/close-icon.png"
+            alt="cross for closing pop up"
+            onClick={handleClose}
+          />
         </div>
         <div className={styles["form"]}>
           {/* <img className="newPostImage" src={newPost} alt="logo" /> */}
@@ -90,7 +96,7 @@ export default function PostForm({
                   placeholder="Postcode"
                   maxLength="8"
                   required
-                  value={userPosts[0].location}
+                  value={userPlotData[0].location}
                   ref={postcode}
                 />
               </div>
