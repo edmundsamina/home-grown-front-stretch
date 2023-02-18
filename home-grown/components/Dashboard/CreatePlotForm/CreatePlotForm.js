@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import styles from "../../../styles/CreatePlotForm.module.css";
+import CloudinaryUploadWidget from "../../UploadWidget/UploadWidget";
 
 export default function CreatePlotForm({ setShow, createPlot }) {
   const [plotSize, setPlotSize] = useState(null);
@@ -10,6 +11,32 @@ export default function CreatePlotForm({ setShow, createPlot }) {
     setShow(false);
     createPlot(plotSize, plotPostcode, plotImageUrl);
   }
+
+  const [filename, setFilename]= useState("")
+  const cloudinaryRef = useRef();
+
+  async function openWidget(e) {
+    e.preventDefault();
+    cloudinaryRef.current = window.cloudinary;
+    const widget = cloudinaryRef.current.createUploadWidget(
+      {
+        cloudName: process.env.NEXT_PUBLIC_CLOUDINARY_NAME,
+        uploadPreset:process.env.NEXT_PUBLIC_CLOUDINARY_UPLOADPRESET,
+        multiple: false,
+        sources: ["local", "url"],
+        clientAllowedFormats: ["png", "jpeg", "pdf", "gif", "jpg"],      
+      },
+      function (error, result) {
+        if (!error && result && result.event === "success") {
+            setFilename(result.info.original_filename + "✅")
+            setPlotImageUrl(result.info.url);
+          console.log("Done! Here is the image info: ", result.info);
+        }
+      }
+    );
+    widget.open();
+  }
+
   return (
     <div className={styles["form-container"]}>
       <div className={styles["header-container"]}>
@@ -41,13 +68,14 @@ export default function CreatePlotForm({ setShow, createPlot }) {
           }}
         />
         <label>Add a photo of your plot</label>
-        <input
+        {/* <input
         className={styles.input}
           placeholder="Enter your image URL"
           onChange={(e) => {
-            setPlotImageUrl(e.target.value);
+           
           }}
-        />
+        /> */}
+        <CloudinaryUploadWidget onClick={openWidget} filename={filename}/>
         <button className={styles["create-plot-button"]}type="submit">Add plot!</button>
       </form>
     </div>

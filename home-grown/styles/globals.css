@@ -132,7 +132,7 @@ footer {
 
 a{
   text-decoration: none;
-  color: var(--mainWhite);
+  color: var(--lighterFontColor);
 }
 
 a:hover{
