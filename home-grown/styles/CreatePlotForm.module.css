@@ -16,7 +16,7 @@
    padding: 10px;
   }
   
-  .input{
+  .input, .upload-button{
     border-radius: 5px;
     padding-left: 1vmin;
     height: 8%;
@@ -31,7 +31,7 @@
   .close-icon{
     height: 100%;
   }
-  .input{
+  .input, .upload-button{
     height: 5vmin;
   }
   
@@ -62,4 +62,9 @@
     width: 30%; 
     background-color: var(--highLightTwo);
     box-shadow:var(--highLightTwo) 0 10px 20px -10px;
+  }
+
+  .upload-button{
+    background-color:  #ddd;
+  
   }

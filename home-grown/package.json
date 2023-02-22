@@ -14,6 +14,8 @@
     "e2e:headless": "start-server-and-test start http://localhost:3000 cypress:headless"
   },
   "dependencies": {
+    "@cloudinary/react": "^1.9.1",
+    "@cloudinary/url-gen": "^1.9.0",
     "@emailjs/browser": "^3.10.0",
     "@next/font": "13.1.1",
     "chart.js": "^4.1.2",
