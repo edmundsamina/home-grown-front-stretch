@@ -4,15 +4,12 @@ import { useState, useEffect, useRef } from "react";
 import styles from "../styles/ListingContainer.module.css";
 import toast, { Toaster } from "react-hot-toast";
 
-function Listings() {
-  useEffect(() => {
-    getPostData();
-  }, []);
+const backendURL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
+function Listings({ data }) {
   const [search, setSearch] = useState("");
   const searchRef = useRef("Search by postcode or crop name");
-  const [posts, setPosts] = useState(null);
-  const backendURL = process.env.NEXT_PUBLIC_BACKEND_URL;
+  const [posts, setPosts] = useState(data.payload);
 
   async function getPostData() {
     const response = await fetch(backendURL + "/api/homegrown/public/posts");
@@ -66,6 +63,15 @@ function Listings() {
       />
     </div>
   );
+}
+
+export async function getServerSideProps() {
+  // Fetch data from external API
+  const response = await fetch(backendURL + "/api/homegrown/public/posts");
+  const data = await response.json();
+
+  // Pass data to the page via props
+  return { props: { data } };
 }
 
 export default Listings;
